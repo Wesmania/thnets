@@ -142,6 +142,12 @@ struct SpatialAveragePooling
 	int iwidth, iheight, count_include_pad;
 };
 
+struct SpatialCrossMapLRN
+{
+	float k, alpha, beta;
+	int size;
+};
+
 struct Linear
 {
 	THFloatTensor *bias, *weight, *addBuffer;
@@ -206,6 +212,7 @@ enum moduletype {
 	MT_SpatialConvolution,
 	MT_SpatialMaxPooling,
 	MT_SpatialAveragePooling,
+	MT_SpatialCrossMapLRN,
 	MT_Linear,
 	MT_SoftMax,
 	MT_Threshold,
@@ -239,6 +246,7 @@ struct module
 		struct SpatialConvolution SpatialConvolution;
 		struct SpatialMaxPooling SpatialMaxPooling;
 		struct SpatialAveragePooling SpatialAveragePooling;
+		struct SpatialCrossMapLRN SpatialCrossMapLRN;
 		struct Linear Linear;
 		struct Threshold Threshold;
 		struct View View;
@@ -335,6 +343,7 @@ THFloatTensor *nn_SpatialConvolutionMM_updateOutput(struct module *module, THFlo
 THFloatTensor *nn_SpatialConvolution_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_SpatialMaxPooling_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_SpatialAveragePooling_updateOutput(struct module *module, THFloatTensor *input);
+THFloatTensor *nn_SpatialCrossMapLRN_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_Threshold_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_View_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_SoftMax_updateOutput(struct module *module, THFloatTensor *input);
@@ -352,6 +361,7 @@ THFloatTensor *nn_Concat_updateOutput(struct module *module, THFloatTensor *inpu
 int nnload_SpatialConvolution(struct module *mod, struct nnmodule *n);
 int nnload_SpatialMaxPooling(struct module *mod, struct nnmodule *n);
 int nnload_SpatialAveragePooling(struct module *mod, struct nnmodule *n);
+int nnload_SpatialCrossMapLRN(struct module *mod, struct nnmodule *n);
 int nnload_Threshold(struct module *mod, struct nnmodule *n);
 int nnload_View(struct module *mod, struct nnmodule *n);
 int nnload_SoftMax(struct module *mod, struct nnmodule *n);

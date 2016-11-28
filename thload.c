@@ -715,6 +715,7 @@ struct object2module object2module[] =
 	{"nn.SpatialConvolution", nnload_SpatialConvolution},
 	{"nn.SpatialMaxPooling", nnload_SpatialMaxPooling},
 	{"nn.SpatialAveragePooling", nnload_SpatialAveragePooling},
+	{"nn.SpatialCrossMapLRN", nnload_SpatialCrossMapLRN},
 	{"nn.Linear", nnload_Linear},
 	{"nn.SoftMax", nnload_SoftMax},
 	{"nn.Threshold", nnload_Threshold},
