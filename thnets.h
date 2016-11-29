@@ -159,6 +159,12 @@ struct Threshold
 	int inplace;
 };
 
+struct MulConstant
+{
+	float constant_scalar;
+	int inplace;
+};
+
 struct View
 {
 	int size, numElements;
@@ -233,6 +239,7 @@ enum moduletype {
 	MT_Linear,
 	MT_SoftMax,
 	MT_Threshold,
+	MT_MulConstant,
 	MT_View,
 	MT_Dropout,
 	MT_SpatialZeroPadding,
@@ -269,6 +276,7 @@ struct module
 		struct SpatialCrossMapLRN SpatialCrossMapLRN;
 		struct Linear Linear;
 		struct Threshold Threshold;
+		struct MulConstant MulConstant;
 		struct View View;
 		struct Dropout Dropout;
 		struct SpatialZeroPadding SpatialZeroPadding;
@@ -368,6 +376,7 @@ THFloatTensor *nn_SpatialMaxPooling_updateOutput(struct module *module, THFloatT
 THFloatTensor *nn_SpatialAveragePooling_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_SpatialCrossMapLRN_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_Threshold_updateOutput(struct module *module, THFloatTensor *input);
+THFloatTensor *nn_MulConstant_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_View_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_SoftMax_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_Linear_updateOutput(struct module *module, THFloatTensor *input);
@@ -389,6 +398,7 @@ int nnload_SpatialMaxPooling(struct module *mod, struct nnmodule *n);
 int nnload_SpatialAveragePooling(struct module *mod, struct nnmodule *n);
 int nnload_SpatialCrossMapLRN(struct module *mod, struct nnmodule *n);
 int nnload_Threshold(struct module *mod, struct nnmodule *n);
+int nnload_MulConstant(struct module *mod, struct nnmodule *n);
 int nnload_View(struct module *mod, struct nnmodule *n);
 int nnload_SoftMax(struct module *mod, struct nnmodule *n);
 int nnload_Linear(struct module *mod, struct nnmodule *n);

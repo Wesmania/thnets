@@ -719,6 +719,7 @@ struct object2module object2module[] =
 	{"nn.Linear", nnload_Linear},
 	{"nn.SoftMax", nnload_SoftMax},
 	{"nn.Threshold", nnload_Threshold},
+	{"nn.MulConstant", nnload_MulConstant},
 	{"nn.ReLU", nnload_Threshold},
 	{"nn.View", nnload_View},
 	{"nn.Dropout", nnload_Dropout},
