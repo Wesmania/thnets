@@ -2,11 +2,12 @@
 #include <string.h>
 #include "../thnets.h"
 
-#define D2I(x) ((int) (x + 0.5))
-
 int nnload_Inception(struct module *mod, struct nnmodule *n)
 {
-	return nnload_DepthConcat(mod, n);
+	nnload_DepthConcat(mod, n);
+	mod->type = MT_Inception;
+	mod->updateOutput = nn_Inception_updateOutput;
+	return 0;
 }
 
 THFloatTensor *nn_Inception_updateOutput(struct module *module, THFloatTensor *input)
