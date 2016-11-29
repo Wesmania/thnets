@@ -205,6 +205,12 @@ struct DepthConcat
 	int nelem, dimension;
 };
 
+struct Inception
+{
+	struct module *modules;
+	int nelem, dimension;
+};
+
 struct Sequential
 {
 	struct module *modules;
@@ -232,7 +238,8 @@ enum moduletype {
 	MT_SpatialBatchNormalization,
 	MT_Sequential,
 	MT_Concat,
-	MT_DepthConcat
+	MT_DepthConcat,
+	MT_Inception
 };
 
 struct network;
@@ -266,6 +273,7 @@ struct module
 		struct Sequential Sequential;
 		struct Concat Concat;
 		struct DepthConcat DepthConcat;
+		struct Inception Inception;
 	};
 };
 
@@ -366,6 +374,7 @@ THFloatTensor *nn_SpatialBatchNormalization_updateOutput(struct module *module, 
 THFloatTensor *nn_Sequential_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_Concat_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_DepthConcat_updateOutput(struct module *module, THFloatTensor *input);
+THFloatTensor *nn_Inception_updateOutput(struct module *module, THFloatTensor *input);
 
 int nnload_SpatialConvolution(struct module *mod, struct nnmodule *n);
 int nnload_SpatialMaxPooling(struct module *mod, struct nnmodule *n);
@@ -385,6 +394,7 @@ int nnload_SpatialBatchNormalization(struct module *mod, struct nnmodule *n);
 int nnload_Sequential(struct module *mod, struct nnmodule *n);
 int nnload_Concat(struct module *mod, struct nnmodule *n);
 int nnload_DepthConcat(struct module *mod, struct nnmodule *n);
+int nnload_Inception(struct module *mod, struct nnmodule *n);
 
 /* High level API */
 
