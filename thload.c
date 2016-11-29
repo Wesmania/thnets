@@ -734,6 +734,7 @@ struct object2module object2module[] =
 	{"nn.SpatialLPPooling", nnload_Sequential},
 	{"nn.Concat", nnload_Concat},
 	{"nn.Square", nnload_Square},
+	{"nn.Sqrt", nnload_Sqrt},
 	{"nn.DepthConcat", nnload_DepthConcat},
 	{"nn.Inception", nnload_Inception},
 	{0,0}

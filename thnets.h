@@ -210,6 +210,11 @@ struct Square
 	int dummy;
 };
 
+struct Sqrt
+{
+	int dummy;
+};
+
 struct DepthConcat
 {
 	struct module *modules;
@@ -253,6 +258,7 @@ enum moduletype {
 	MT_DepthConcat,
 	MT_Inception,
 	MT_Square,
+	MT_Sqrt,
 };
 
 struct network;
@@ -287,6 +293,7 @@ struct module
 		struct Sequential Sequential;
 		struct Concat Concat;
 		struct Square Square;
+		struct Sqrt Sqrt;
 		struct DepthConcat DepthConcat;
 		struct Inception Inception;
 	};
@@ -390,6 +397,7 @@ THFloatTensor *nn_SpatialBatchNormalization_updateOutput(struct module *module, 
 THFloatTensor *nn_Sequential_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_Concat_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_Square_updateOutput(struct module *module, THFloatTensor *input);
+THFloatTensor *nn_Sqrt_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_DepthConcat_updateOutput(struct module *module, THFloatTensor *input);
 THFloatTensor *nn_Inception_updateOutput(struct module *module, THFloatTensor *input);
 
@@ -412,6 +420,7 @@ int nnload_SpatialBatchNormalization(struct module *mod, struct nnmodule *n);
 int nnload_Sequential(struct module *mod, struct nnmodule *n);
 int nnload_Concat(struct module *mod, struct nnmodule *n);
 int nnload_Square(struct module *mod, struct nnmodule *n);
+int nnload_Sqrt(struct module *mod, struct nnmodule *n);
 int nnload_DepthConcat(struct module *mod, struct nnmodule *n);
 int nnload_Inception(struct module *mod, struct nnmodule *n);
 
