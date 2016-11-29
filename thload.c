@@ -731,6 +731,7 @@ struct object2module object2module[] =
 	{"nn.SpatialBatchNormalization", nnload_SpatialBatchNormalization},
 	{"nn.Sequential", nnload_Sequential},
 	{"nn.Concat", nnload_Concat},
+	{"nn.DepthConcat", nnload_DepthConcat},
 	{0,0}
 };
 
@@ -740,7 +741,7 @@ struct network *Module2Network(struct nnmodule *mod)
 	struct table *mt;
 	int i, j;
 	
-	if(strcmp(mod->name, "nn.Sequential") && strcmp(mod->name, "nn.Concat"))
+	if(strcmp(mod->name, "nn.Sequential") && strcmp(mod->name, "nn.Concat") && strcmp(mod->name, "nn.DepthConcat"))
 		return 0;
 	for(i = 0; i < mod->table->nelem; i++)
 	{
