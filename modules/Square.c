@@ -16,11 +16,7 @@ THFloatTensor *nn_Square_updateOutput(struct module *module, THFloatTensor *inpu
 	float *output_data = THFloatTensor_data(output);
 	float *input_data = THFloatTensor_data(input);
 
-	long l, nelem = 1;
-	int i;
-
-	for (i = 0; i < input->nDimension ; i++)
-		nelem *= input->size[i];
+	long l, nelem = THFloatTensor_nElement(input);
 
 #pragma omp parallel for private(l)
 	for (l = 0; l < nelem; l++)
