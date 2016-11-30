@@ -6,6 +6,10 @@ int nnload_Inception(struct module *mod, struct nnmodule *n)
 {
 	nnload_DepthConcat(mod, n);
 	mod->type = MT_Inception;
+	struct network *net = Module2Network(n);
+	mod->Inception.nelem = net->nelem;
+	mod->Inception.modules = net->modules;
+	free(net);
 	mod->updateOutput = nn_Inception_updateOutput;
 	return 0;
 }
@@ -13,15 +17,21 @@ int nnload_Inception(struct module *mod, struct nnmodule *n)
 THFloatTensor *nn_Inception_updateOutput(struct module *module, THFloatTensor *input)
 {
 	int batchdim = input->nDimension + 1;
-	THFloatTensor *output;
+	THFloatTensor *output = module->output;
 	long newdims[batchdim];
+	struct module *modules = module->Inception.modules;
 
-	memcpy(newdims, input->size, batchdim * sizeof(*input->size));
-	newdims[batchdim - 1] = 1;
+	/* batch */
+	memcpy(newdims + 1, input->size, input->nDimension * sizeof(*input->size));
+	newdims[0] = 1;
 	THFloatTensor_resize(input, newdims, batchdim);
 
-	output = nn_DepthConcat_updateOutput(module, input);
+	modules[0].updateOutput(&modules[0], input);
+	THFloatTensor_set(output, modules[0].output);
 
-	THFloatTensor_resize(output, output->size, output->nDimension - 1);
+	/* debatch */
+	memcpy(newdims, output->size, batchdim * sizeof(*input->size));
+	THFloatTensor_resize(output, newdims + 1, batchdim - 1);
+
 	return output;
 }

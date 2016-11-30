@@ -224,7 +224,7 @@ struct DepthConcat
 struct Inception
 {
 	struct module *modules;
-	int nelem, dimension;
+	int nelem;
 };
 
 struct Sequential
