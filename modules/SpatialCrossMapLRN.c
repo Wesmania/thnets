@@ -66,7 +66,7 @@ THFloatTensor *nn_SpatialCrossMapLRN_updateOutput(struct module *module, THFloat
 	/* calculate square of input in output */
 
 	long l;
-#pragma omp parallel for private(l)
+//#pragma omp parallel for private(l)
 	for (l = 0; l < nbatch * channels * inputWidth * inputHeight; l++)
 		output_data[l] = input_data[l] * input_data[l];
 
@@ -83,7 +83,7 @@ THFloatTensor *nn_SpatialCrossMapLRN_updateOutput(struct module *module, THFloat
 
 	/* first feature map normalization */
 	for (ci = 0; ci < prePadCrop; ci++) {
-#pragma omp parallel for private(wi)
+//#pragma omp parallel for private(wi)
 		for (wi = 0; wi < inputWidth; wi++) {
 			for (hi = 0; hi < inputHeight; hi++) {
 				for (bi = 0; bi < nbatch; bi++) {
@@ -96,17 +96,17 @@ THFloatTensor *nn_SpatialCrossMapLRN_updateOutput(struct module *module, THFloat
 
 	/* reuse normalizations for further channels */
 	for (ci = 1; ci < channels; ci++) {
-#pragma omp parallel for private(wi)
+//#pragma omp parallel for private(wi)
 		for (wi = 0; wi < inputWidth; wi++) {
 			for (hi = 0; hi < inputHeight; hi++) {
 				for (bi = 0; bi < nbatch; bi++) {
 					scale_data[ci * cs + wi * ws + hi * hs + bi * bs] =
 						scale_data[(ci - 1) * cs + wi * ws + hi * hs + bi * bs];
-					if (ci + prepad - 1 < channels) {
+					if (ci + prePad - 1 < channels) {
 						scale_data[ci * cs + wi * ws + hi * hs + bi * bs] +=
 							input_data[(ci + prePad - 1) * cs + wi * ws + hi * hs + bi * bs];
 					}
-					if (ci - prepad >= 0) {
+					if (ci - prePad >= 0) {
 						scale_data[ci * cs + wi * ws + hi * hs + bi * bs] -=
 							input_data[(ci - prePad) * cs + wi * ws + hi * hs + bi * bs];
 					}
@@ -115,7 +115,7 @@ THFloatTensor *nn_SpatialCrossMapLRN_updateOutput(struct module *module, THFloat
 		}	
 	}
 
-#pragma omp parallel for private(l)
+//#pragma omp parallel for private(l)
 	for (l = 0; l < nbatch * channels * inputWidth * inputHeight; l++) {
 		scale_data[l] *= (alpha/size);
 		scale_data[l] += k;
