@@ -102,11 +102,11 @@ THFloatTensor *nn_SpatialCrossMapLRN_updateOutput(struct module *module, THFloat
 				for (bi = 0; bi < nbatch; bi++) {
 					scale_data[ci * cs + wi * ws + hi * hs + bi * bs] =
 						scale_data[(ci - 1) * cs + wi * ws + hi * hs + bi * bs];
-					if (ci < channels - prePad + 2) {
+					if (ci + prepad - 1 < channels) {
 						scale_data[ci * cs + wi * ws + hi * hs + bi * bs] +=
 							input_data[(ci + prePad - 1) * cs + wi * ws + hi * hs + bi * bs];
 					}
-					if (ci > prePad) {
+					if (ci - prepad >= 0) {
 						scale_data[ci * cs + wi * ws + hi * hs + bi * bs] -=
 							input_data[(ci - prePad) * cs + wi * ws + hi * hs + bi * bs];
 					}
