@@ -17,10 +17,17 @@ int nnload_SpatialBatchNormalization(struct module *mod, struct nnmodule *n)
 	mod->nnfree = nnfree_SpatialBatchNormalization;
 	struct SpatialBatchNormalization *m = &mod->SpatialBatchNormalization;
 	m->running_mean = TableGetTensor(t, "running_mean");
-	m->running_var = TableGetTensor(t, "running_var");
 	m->weight = TableGetTensor(t, "weight");
 	m->bias = TableGetTensor(t, "bias");
 	m->eps = TableGetNumber(t, "eps");
+
+	/* FIXME: hack to use older version, as one in Openface */
+	m->running_var = TableGetTensor(t, "running_std");
+	long i;
+	float *var = THFloatTensor_data(m->running_var);
+	for (i = 0; i < THFloatTensor_nElement(m->running_var); i++)
+		var[i] = pow(var[i] + m->eps, 0.5);
+
 	return 0;
 }
 
