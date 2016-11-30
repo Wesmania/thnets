@@ -46,7 +46,7 @@ endif
 
 ifeq ($(filter x86_64% arm% aarc%,$(UNAME_P)),)
 	CFLAGS += -DUSEBLAS
-	LIBS += -L$(OPENBLASPATH) -lopenblas
+	LIBS += -L$(OPENBLASPATH) -lopenblas_openmp
 endif
 	
 ifneq ($(MEMORYDEBUG),no)
