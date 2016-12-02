@@ -21,13 +21,16 @@ int nnload_SpatialBatchNormalization(struct module *mod, struct nnmodule *n)
 	m->bias = TableGetTensor(t, "bias");
 	m->eps = TableGetNumber(t, "eps");
 
-	/* FIXME: hack to use older version, as one in Openface */
-	m->running_var = TableGetTensor(t, "running_std");
-	long i;
-	float *var = THFloatTensor_data(m->running_var);
-	for (i = 0; i < THFloatTensor_nElement(m->running_var); i++)
-		var[i] = pow(var[i] + m->eps, 0.5);
-
+	/* FIXME: this feels like duck typing, I think the formats are versioned */
+	m->running_var = TableGetTensor(t, "running_var");
+	if (m->running_var->nDimension == 0) {
+		THFloatTensor_free(mod->SpatialBatchNormalization.running_var);
+		m->running_var = TableGetTensor(t, "running_std");
+		long i;
+		float *var = THFloatTensor_data(m->running_var);
+		for (i = 0; i < THFloatTensor_nElement(m->running_var); i++)
+			var[i] = pow(var[i] + m->eps, 0.5);
+		}
 	return 0;
 }
 
