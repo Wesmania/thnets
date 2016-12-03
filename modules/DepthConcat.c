@@ -38,11 +38,11 @@ void copy_with_center(THFloatTensor *out, THFloatTensor *in, int offset, int dep
 	}
 
 	while(loops[0] < in->size[0]) {
-		outs[out_off] = ints[in_off];
+		memcpy(outs + out_off, ints + in_off, in->size[dim - 1] * sizeof(*outs));
+		loops[dim - 1] += in->size[dim - 1];
+		in_off += in->stride[dim - 1] * in->size[dim - 1];
+		out_off += out->stride[dim - 1] * in->size[dim - 1];
 		lvl = dim - 1;
-		loops[lvl]++;
-		in_off += in->stride[lvl];
-		out_off += out->stride[lvl];
 		while (lvl > 0 && loops[lvl] == in->size[lvl]) {
 			loops[lvl] = 0;
 			in_off -= in->stride[lvl] * in->size[lvl];
